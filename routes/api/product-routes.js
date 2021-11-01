@@ -11,14 +11,12 @@ router.get('/', (req, res) => {
       attribute: ['category_name']
     },
     {
-      model: ProductTag,
-      attribute: ['tag_id'],
-      include: {
-        model: Tag,
-        attribute: ['tag_id', 'tag_name']
-      }
-    }]
-  })
+      model: Tag,
+      attribute: ['tag_name'],
+     through: ProductTag,
+     as: 'tagged_product'
+  }]
+})
   .then(dbProductData => res.json(dbProductData))
   .catch(err => {
     console.log(err);
@@ -37,14 +35,12 @@ router.get('/:id', (req, res) => {
       attribute: ['category_id', 'category_name']
     },
     {
-      model: ProductTag,
-      attribute: ['tag_id'],
-      include: {
-        model: Tag,
-        attribute: ['tag_id', 'tag_name']
-      }
-    }]
-  })
+      model: Tag,
+      attribute: ['tag_name'],
+     through: ProductTag,
+     as: 'tagged_product'
+  }]
+})
   .then(dbProductData => {
     if(!dbProductData) {
       res.status(404).json({Message: 'No product found with this id'})
